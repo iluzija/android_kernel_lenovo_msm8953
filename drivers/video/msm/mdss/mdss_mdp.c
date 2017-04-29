@@ -54,6 +54,7 @@
 #include "mdss_panel.h"
 #include "mdss_debug.h"
 #include "mdss_mdp_debug.h"
+#include "mdss_mdp_rotator.h"
 #include "mdss_smmu.h"
 
 #include "mdss_mdp_trace.h"
@@ -2345,6 +2346,11 @@ static int mdss_mdp_probe(struct platform_device *pdev)
 	rc = mdss_mdp_get_cmdline_config(pdev);
 	if (rc) {
 		pr_err("Error in panel override:rc=[%d]\n", rc);
+		goto probe_done;
+	}
+	rc = mdss_mdp_rot_mgr_init();
+	if (rc) {
+		pr_err("unable to initialize rotation mgr\n");
 		goto probe_done;
 	}
 
